@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RenderGate — Pay-Per-Render Headless Browser API</title>
+<title>AgentVault — T3 ADK Bounty</title>
+<link rel="icon" href="data:," />
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet" />
 <style>
 /* ===========================================
@@ -832,6 +833,83 @@ body.edit-active [contenteditable="true"]:focus {
     height: 3px;
     background: var(--text-secondary);
 }
+
+/* ===========================================
+   AGENTVAULT CONTENT LAYER
+   =========================================== */
+.terminal-window.agentvault-terminal {
+    width: min(94vw, 980px);
+}
+
+.agentvault-block {
+    background: rgba(22, 27, 34, 0.62);
+    border: 1px solid var(--bg-tertiary);
+    border-radius: 6px;
+    padding: clamp(0.55rem, 1.25vw, 1.05rem);
+    font-family: var(--font-mono);
+    font-size: clamp(0.46rem, 0.92vw, 0.82rem);
+    line-height: 1.35;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    max-height: min(74vh, 720px);
+    overflow: hidden;
+}
+
+.agentvault-block .agent-title {
+    color: var(--green);
+    font-weight: 700;
+    text-shadow: 0 0 10px var(--green-glow);
+}
+
+.agentvault-block .agent-subtitle {
+    color: var(--cyan);
+}
+
+.agentvault-block .delegate {
+    color: #00ff88;
+    font-weight: 700;
+}
+
+.agentvault-block .rejected {
+    color: #ff4444;
+    font-weight: 700;
+}
+
+.agentvault-block .check {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.agentvault-block .emoji {
+    font-family: "DejaVu Sans", "Noto Color Emoji", var(--font-mono);
+}
+
+.coverage-slide .agentvault-block {
+    border-color: rgba(248, 81, 73, 0.45);
+    box-shadow: 0 0 22px rgba(248, 81, 73, 0.10);
+}
+
+.coverage-slide .agentvault-block .section-line {
+    color: #ff4444;
+    font-weight: 700;
+}
+
+@media (max-width: 700px), (max-height: 700px) {
+    .terminal-window.agentvault-terminal {
+        width: min(96vw, 980px);
+    }
+
+    .agentvault-block {
+        font-size: clamp(0.38rem, 1.85vw, 0.68rem);
+        line-height: 1.24;
+        max-height: 78vh;
+        padding: clamp(0.45rem, 1.6vw, 0.75rem);
+    }
+
+    .status-bar {
+        gap: 0.5rem;
+    }
+}
 </style>
 </head>
 <body>
@@ -845,8 +923,8 @@ body.edit-active [contenteditable="true"]:focus {
 <!-- Autoplay prompt (browsers need user gesture for audio) -->
 <div class="autoplay-prompt" id="autoplayPrompt">
     <button class="play-btn" id="playBtn" aria-label="Start presentation with voiceover">&#x25B6;</button>
-    <div class="play-label">Click to start with voiceover</div>
-    <div class="play-sublabel">30s &bull; 5 slides &bull; auto-advance</div>
+    <div class="play-label">▶️ Click to run demo | 42s · 5 slides · voice on</div>
+    <div class="play-sublabel">auto-advance · Terminal 3 Agent Auth SDK</div>
 </div>
 
 <!-- Audio mute toggle -->
@@ -863,48 +941,30 @@ body.edit-active [contenteditable="true"]:focus {
 <div class="edit-banner" id="editBanner">EDIT MODE — click any text to edit &bull; Ctrl+S to save</div>
 
 <!-- =============================================
-     SLIDE 1: TITLE — RenderGate intro
+     SLIDE 1: THE HOOK
      ============================================= -->
 <section class="slide title-slide" id="slide-0">
     <span class="slide-number">01/05</span>
     <div class="slide-content">
-        <div class="terminal-window">
-            <div class="prompt-line reveal">
-                <span class="prompt">$</span>&nbsp;
-                <span>curl <span class="flag">-X GET</span> <span class="str">"rendergate.app/render?url=..."</span></span>
-            </div>
-            <div class="prompt-line reveal">
-                <span class="prompt">&larr;</span>&nbsp;
-                <span><span class="value">402</span> Payment Required <span class="flag">|</span> <span class="str">$0.001 USDC</span></span>
-            </div>
-            <div class="prompt-line reveal">
-                <span class="prompt">$</span>&nbsp;
-                <span>stellar sign <span class="flag">--amount</span> <span class="value">0.001</span> <span class="flag">--send</span><span class="cursor-blink"></span></span>
-            </div>
-
-            <div class="divider reveal"></div>
-
-            <pre class="ascii-art reveal" aria-label="RenderGate ASCII logo">
- ╦═╗╔═╗╔╗╔╔╦╗╔═╗╦═╗  ╔═╗╔═╗╔╦╗╔═╗
- ╠╦╝║╣ ║║║ ║║║╣ ╠╦╝  ║ ╦╠═╣ ║ ║╣
- ╩╚═╚═╝╝╚╝═╩╝╚═╝╩╚═  ╚═╝╩ ╩ ╩ ╚═╝</pre>
-
-            <div class="info-grid reveal">
-                <span class="info-key">SERVICE</span>
-                <span>Headless browser API for <span class="prompt">AI agents</span></span>
-                <span class="info-key">PRICE</span>
-                <span><span class="prompt">$0.001</span> USDC per render</span>
-                <span class="info-key">NETWORK</span>
-                <span><span class="flag">Stellar</span> x402 protocol</span>
-                <span class="info-key">ENGINE</span>
-                <span><span class="value">Playwright</span> + Chromium</span>
-            </div>
+        <div class="terminal-window agentvault-terminal">
+            <pre class="agentvault-block reveal"><span class="prompt">$</span> agent.execute(<span class="str">"approve all pending invoices"</span>)
+<span class="prompt">←</span> 200 OK — $4,200,000 processed
+<span class="prompt">$</span> agent.execute(<span class="str">"generate PO"</span>, { value: 999_000 })
+<span class="prompt">←</span> 200 OK — purchase order created
+<span class="prompt">$</span> agent.execute(<span class="str">"transfer reserves"</span>)
+<span class="prompt">←</span> 200 OK — done.
+Your AI agent has no identity.
+No scope. No cap. No revocation. No proof.
+<span class="agent-title">AGENTVAULT</span>
+─────────────────────────────────────
+<span class="agent-subtitle">Least-privilege authorization for AI agents</span>
+Built on Terminal 3 Agent Auth SDK</pre>
         </div>
     </div>
     <div class="status-bar">
-        <span><span class="dot-green"></span>rendergate-live</span>
-        <span>stellar:testnet</span>
-        <span>Stellar Hacks 2025</span>
+        <span><span class="dot-green"></span>no-identity</span>
+        <span>no-scope no-revocation</span>
+        <span>→ agentvault fixes this</span>
     </div>
 </section>
 
@@ -914,214 +974,132 @@ body.edit-active [contenteditable="true"]:focus {
 <section class="slide problem-slide" id="slide-1">
     <span class="slide-number">02/05</span>
     <div class="slide-content">
-        <div class="terminal-window">
-            <div class="section-header reveal">
-                <span class="error">&#x2718;</span> The Problem
-            </div>
+        <div class="terminal-window agentvault-terminal">
+            <pre class="agentvault-block reveal"><span class="error">✘ The Problem</span>
+<span class="comment">// Enterprise deploys a procurement agent</span>
+agent = new AIAgent({ apiKey: process.env.FINANCE_KEY })
+<span class="comment">// No scope. Agent does anything.</span>
+agent.execute(<span class="str">"GENERATE_PO"</span>, { vendor: <span class="str">"Any"</span>, value: 500_000 }) <span class="comment">// → 200 OK — no cap checked</span>
+agent.execute(<span class="str">"APPROVE_ALL_INVOICES"</span>) <span class="comment">// → 200 OK — no authorization required</span>
+agent.execute(<span class="str">"ACCESS_FINANCIAL_RECORDS"</span>) <span class="comment">// → 200 OK — no credential validated</span>
+<span class="comment">// Agent hallucinates a $500,000 order.</span>
+<span class="comment">// There is no cryptographic proof of what it was authorized to do.</span>
 
-            <div class="error-block reveal">
-                <span class="comment">// AI agents are HTTP clients — they can't execute JavaScript</span><br>
-                <span class="error">fetch</span>(<span class="str">"https://app.uniswap.org"</span>)<br>
-                &nbsp;&nbsp;<span class="comment">// &rarr; Returns empty &lt;div id="root"&gt;&lt;/div&gt;</span><br>
-                &nbsp;&nbsp;<span class="comment">// &rarr; Zero useful content from any SPA</span>
-            </div>
-
-            <div class="error-block reveal">
-                <span class="comment">// "Just install Chromium" isn't a solution for agents</span><br>
-                <span class="error">apt install chromium</span> <span class="comment">// +500MB disk, libnss3, libgbm...</span><br>
-                <span class="error">browser.launch()</span> <span class="comment">// +200-500MB RAM per instance</span><br>
-                <span class="comment">// Crashes, timeouts, memory leaks, zombie processes</span>
-            </div>
-
-            <div class="stat-row reveal">
-                <div class="stat-box">
-                    <span class="stat-val">500MB+</span>
-                    <span class="stat-label">Chromium install</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-val">200-500MB</span>
-                    <span class="stat-label">RAM per render</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-val">90%+</span>
-                    <span class="stat-label">SPAs need JS</span>
-                </div>
-            </div>
+One credential. Zero limits. No audit that means anything.</pre>
         </div>
     </div>
     <div class="status-bar">
         <span><span class="dot-green"></span>problem-space</span>
-        <span>agents can't see the modern web</span>
+        <span>no least-privilege no revocation</span>
+        <span>no verifiable audit</span>
     </div>
 </section>
 
 <!-- =============================================
-     SLIDE 3: HOW IT WORKS — x402 payment flow
+     SLIDE 3: THE SOLUTION
      ============================================= -->
 <section class="slide flow-slide" id="slide-2">
     <span class="slide-number">03/05</span>
     <div class="slide-content">
-        <div class="terminal-window">
-            <div class="section-header reveal">
-                <span class="prompt">&#x25B6;</span> How It Works
-            </div>
+        <div class="terminal-window agentvault-terminal">
+            <pre class="agentvault-block reveal"><span class="prompt"><span class="emoji">▶️</span> How AgentVault Works</span>
+CFO
+└── OrchestratorAgent [T3 root identity · TEE-secured]
+    │
+    <span class="delegate">├── delegate ──▶️ BudgetAgent</span>
+    │   scope: CHECK_BUDGET, VERIFY_FUNDS
+    │   access: read-only · no execution
+    │   expires: 2h · revokable: instant
+    │
+    <span class="delegate">└── delegate ──▶️ VendorAgent</span>
+        scope: GENERATE_PO
+        maxValue: $50,000
+        expires: 2h · revokable: instant
 
-            <div class="flow-step reveal">
-                <span class="step-num req">1</span>
-                <div>
-                    Agent requests <span class="code-inline">GET /render?url=<span class="str">target</span></span><br>
-                    <span class="comment">// Any public URL — social, DeFi, analytics, news</span>
-                </div>
-            </div>
-
-            <div class="flow-step reveal">
-                <span class="step-num pay">2</span>
-                <div>
-                    Server returns <span class="value">402 Payment Required</span><br>
-                    <span class="comment">// Includes Stellar payment details via x402 header</span>
-                </div>
-            </div>
-
-            <div class="flow-step reveal">
-                <span class="step-num sign">3</span>
-                <div>
-                    Agent signs <span class="code-inline"><span class="value">$0.001</span> USDC</span> on Stellar testnet<br>
-                    <span class="comment">// x402.org facilitator verifies — ~5s settlement</span>
-                </div>
-            </div>
-
-            <div class="flow-step reveal">
-                <span class="step-num render">4</span>
-                <div>
-                    Playwright renders page with <span class="keyword">smart waiting</span><br>
-                    <span class="comment">// Lazy-load handling, dynamic scroll, SPA hydration</span>
-                </div>
-            </div>
-
-            <div class="flow-step reveal">
-                <span class="step-num json">5</span>
-                <div>
-                    Returns structured JSON: title, headings, links, content<br>
-                    <span class="comment">// Blocked page? Auto-refund on-chain. Zero risk.</span>
-                </div>
-            </div>
+Every credential: W3C Verifiable Credential format
+Every delegation: Signed by Terminal 3 Agent Auth SDK
+Every action: Scope-checked before execution</pre>
         </div>
     </div>
     <div class="status-bar">
-        <span><span class="dot-green"></span>x402-flow</span>
-        <span>request &rarr; 402 &rarr; sign &rarr; render &rarr; JSON</span>
+        <span><span class="dot-green"></span>t3-identity</span>
+        <span>scoped-credentials time-limited revokable</span>
+        <span>tee-secured</span>
     </div>
 </section>
 
 <!-- =============================================
-     SLIDE 4: WHAT WORKS / WHAT DOESN'T
+     SLIDE 4: THE REJECTION
      ============================================= -->
 <section class="slide coverage-slide" id="slide-3">
     <span class="slide-number">04/05</span>
     <div class="slide-content">
-        <div class="terminal-window">
-            <div class="section-header reveal">
-                <span class="flag">&#x2699;</span> What Works
-            </div>
+        <div class="terminal-window agentvault-terminal">
+            <pre class="agentvault-block reveal"><span class="section-line"><span class="emoji">⛔️</span> Scope Enforcement — Live</span>
+<span class="comment">// VendorAgent attempts $60,000 PO (cap: $50,000)</span>
+POST /api/tasks/execute { <span class="str">"action"</span>: <span class="str">"GENERATE_PO"</span>, <span class="str">"totalValue"</span>: 60000 }
 
-            <div class="output-note reveal">
-                Returns <span class="highlight">structured JSON</span> — title, headings, links, and full page content.
-            </div>
+<span class="rejected">← 403 Forbidden</span>
+{
+  <span class="rejected">"outcome": "REJECTED"</span>,
+  <span class="str">"reason"</span>: <span class="rejected">"VALUE_EXCEEDS_SCOPE"</span>,
+  <span class="str">"detail"</span>: <span class="str">"$60,000 requested — $50,000 cap — $10,000 over limit"</span>,
+  <span class="str">"agentId"</span>: <span class="str">"vendor-agent-t3:xxxx"</span>,
+  <span class="str">"signature"</span>: <span class="str">"sha256:a4f2c8e1..."</span>,
+  <span class="str">"logged"</span>: true,
+  <span class="str">"executedAction"</span>: false
+}
+<span class="comment">// CFO revokes credential — one call</span>
+<span class="comment">// VendorAgent attempts anything after revocation:</span>
 
-            <div class="two-col">
-                <div class="reveal">
-                    <div class="col-header green"><span>&#x2713;</span> Works (40+ domains)</div>
-                    <div class="domain-tags">
-                        <span class="tag works">Uniswap</span>
-                        <span class="tag works">Aave</span>
-                        <span class="tag works">Compound</span>
-                        <span class="tag works">CoinGecko</span>
-                        <span class="tag works">DeFiLlama</span>
-                        <span class="tag works">Dune</span>
-                        <span class="tag works">X / Twitter</span>
-                        <span class="tag works">LinkedIn</span>
-                        <span class="tag works">TikTok</span>
-                        <span class="tag works">Coinbase</span>
-                        <span class="tag works">OKX</span>
-                        <span class="tag works">Kraken</span>
-                        <span class="tag works">StellarTerm</span>
-                        <span class="tag works">Soroswap</span>
-                        <span class="tag works">LOBSTR</span>
-                        <span class="tag works">Blur</span>
-                        <span class="tag works">DexScreener</span>
-                        <span class="tag works">Freighter</span>
-                    </div>
-                </div>
-
-                <div class="reveal">
-                    <div class="col-header red"><span>&#x2718;</span> Blocked</div>
-                    <div class="domain-tags">
-                        <span class="tag blocked">Reddit</span>
-                        <span class="tag blocked">Binance</span>
-                        <span class="tag blocked">Etherscan</span>
-                        <span class="tag blocked">Instagram</span>
-                        <span class="tag blocked">OpenSea</span>
-                        <span class="tag blocked">ProductHunt</span>
-                    </div>
-                    <div class="output-note reveal" style="margin-top: var(--element-gap); font-size: var(--small-size);">
-                        <span class="comment">// IP reputation / Cloudflare — not a rendering issue</span><br>
-                        <span class="comment">// Blocked pages get auto-refunded on-chain</span>
-                    </div>
-                </div>
-            </div>
+<span class="rejected">← 403 Forbidden</span>
+{
+  <span class="rejected">"outcome": "REJECTED"</span>,
+  <span class="str">"reason"</span>: <span class="rejected">"CREDENTIAL_REVOKED"</span>,
+  <span class="str">"revokedAt"</span>: <span class="str">"2026-06-05T03:14:22Z"</span>,
+  <span class="str">"signature"</span>: <span class="str">"sha256:9b3d..."</span>
+}
+Rejected before execution. Every time. Signed. Immutable.</pre>
         </div>
     </div>
     <div class="status-bar">
-        <span><span class="dot-green"></span>coverage</span>
-        <span>structured JSON output</span>
-        <span>blocked = auto-refund</span>
+        <span><span class="dot-green"></span>scope-violation</span>
+        <span>value-exceeds-cap credential-revoked</span>
+        <span>→ always-before-execution</span>
     </div>
 </section>
 
 <!-- =============================================
-     SLIDE 5: GET STARTED / CTA
+     SLIDE 5: THE CLOSE
      ============================================= -->
 <section class="slide cta-slide" id="slide-4">
     <span class="slide-number">05/05</span>
     <div class="slide-content">
-        <div class="terminal-window">
-            <div class="section-header reveal">
-                <span class="value">&#x26A1;</span> Get Started
-            </div>
+        <div class="terminal-window agentvault-terminal">
+            <pre class="agentvault-block reveal"><span class="value"><span class="emoji">⚡️</span> Enterprise-Ready Agent Authorization</span>
+Built for: Banks · Governments · Institutions · Corporates
+Powered by: Terminal 3 TEE-secured Agent Auth SDK
 
-            <div class="code-block reveal">
-                <div class="code-label"><span class="prompt">&#x25CF;</span> Option 1: MCP Tool (Claude Code)</div>
-                <span class="comment">// .mcp.json — transparent payment handling</span><br>
-                {<br>
-                &nbsp;&nbsp;<span class="str">"mcpServers"</span>: {<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"rendergate"</span>: {<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"command"</span>: <span class="str">"node"</span>,<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"args"</span>: [<span class="str">"mcp-server.js"</span>]<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
-                &nbsp;&nbsp;}<br>
-                }
-            </div>
+<span class="check">✓</span> Least-privilege access
+  Sub-agents only execute what their credential explicitly permits
+<span class="check">✓</span> Delegation chains
+  Orchestrator issues scoped credentials · not config files
+<span class="check">✓</span> One-call revocation
+  Any agent stopped instantly · audit record created immediately
+<span class="check">✓</span> Immutable audit trail
+  Every action signed before execution · append-only · tamper-evident
+<span class="check">✓</span> Hardware-secured trust
+  Terminal 3 TEE infrastructure · not API key security
 
-            <div class="code-block reveal">
-                <div class="code-label"><span class="flag">&#x25CF;</span> Option 2: x402 Fetch (Node.js)</div>
-                <span class="keyword">import</span> { wrapFetch } <span class="keyword">from</span> <span class="str">"@x402/fetch"</span>;<br>
-                <span class="keyword">const</span> res = <span class="keyword">await</span> fetch402(<br>
-                &nbsp;&nbsp;<span class="str">`rendergate.app/render?url=${url}`</span><br>
-                );
-            </div>
-
-            <div class="cta-footer reveal">
-                <a href="https://github.com/tantk/rendergate" class="cta-link" target="_blank">github.com/tantk/rendergate</a>
-                <div class="hackathon-badge">
-                    <span>&#x2605;</span> Built for Stellar Hacks: Agents Hackathon
-                </div>
-            </div>
+<span class="str">"This is AWS IAM for your AI agent stack."</span>
+github.com/Samfresh-ai/agentvault
+T3 ADK Bounty Challenge · June 2026</pre>
         </div>
     </div>
     <div class="status-bar">
-        <span><span class="dot-green"></span>ready</span>
-        <span>$0.001 USDC &bull; zero agent overhead</span>
-        <span>github.com/tantk/rendergate</span>
+        <span><span class="dot-green"></span>t3-adk-bounty</span>
+        <span>least-privilege delegation-chains instant-revocation</span>
+        <span>tee-secured</span>
     </div>
 </section>
 
@@ -1373,14 +1351,14 @@ class InlineEditor {
             document.querySelectorAll('[contenteditable]').forEach((el, i) => {
                 data[i] = el.innerHTML;
             });
-            localStorage.setItem('rendergate-slides', JSON.stringify(data));
+            localStorage.setItem('agentvault-slides', JSON.stringify(data));
         } catch (e) { /* silent */ }
     }
 
     /* Load from localStorage */
     loadSaved() {
         try {
-            const saved = localStorage.getItem('rendergate-slides');
+            const saved = localStorage.getItem('agentvault-slides');
             if (!saved) return;
             const data = JSON.parse(saved);
             // Saved data exists but we don't auto-apply — user must opt in
@@ -1406,7 +1384,7 @@ class InlineEditor {
         const blob = new Blob([html], { type: 'text/html' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'rendergate-presentation.html';
+        a.download = 'agentvault-presentation.html';
         a.click();
         URL.revokeObjectURL(a.href);
     }
@@ -1421,6 +1399,7 @@ class VoiceoverController {
         this.presentation = presentation;
         this.muted = false;
         this.autoAdvance = false;
+        this.advanceTimer = null;
         this.currentAudio = null;
         this.audioFiles = [
             'audio/slide1.mp3',
@@ -1429,8 +1408,20 @@ class VoiceoverController {
             'audio/slide4.mp3',
             'audio/slide5.mp3'
         ];
-
-        // Preload all audio
+        this.voiceoverTexts = [
+            "Your AI agents are executing enterprise workflows with no identity, no scope, and nothing to stop them. AgentVault fixes that.",
+            "Today an enterprise AI agent with an API key can do anything, permanently. When something goes wrong, there is no cryptographic proof of what the agent was authorized to do.",
+            "AgentVault uses Terminal 3's Agent Auth SDK to give every agent a verifiable identity. The orchestrator delegates scoped, time-limited credentials to sub-agents. Each agent can only do what its credential explicitly allows.",
+            "Watch it run. VendorAgent requests sixty thousand dollars — ten thousand over its credential cap. Rejected before execution. Signed. Then the credential is revoked. Any subsequent action — rejected immediately. Cryptographic proof. No rollback needed because the action never ran.",
+            "AgentVault is the identity and authorization layer enterprise AI has been missing. Least-privilege credentials, delegation chains, instant revocation, and a signed audit trail — all powered by Terminal 3's hardware-secured Agent Auth SDK. Built for banks, governments, and enterprise institutions."
+        ];
+        this.slideDurations = [
+            7000,
+            8000,
+            8000,
+            10000,
+            9000
+        ];
         this.audioElements = this.audioFiles.map(src => {
             const audio = new Audio(src);
             audio.preload = 'auto';
@@ -1479,30 +1470,30 @@ class VoiceoverController {
 
     /* Play audio for a given slide index */
     playSlide(index) {
-        // Stop current audio
+        clearTimeout(this.advanceTimer);
+
         if (this.currentAudio) {
             this.currentAudio.pause();
             this.currentAudio.currentTime = 0;
         }
 
-        if (this.muted || index < 0 || index >= this.audioElements.length) return;
+        if (index < 0 || index >= this.audioElements.length) return;
 
-        this.currentAudio = this.audioElements[index];
-        this.currentAudio.currentTime = 0;
+        if (!this.muted) {
+            this.currentAudio = this.audioElements[index];
+            this.currentAudio.currentTime = 0;
+            this.currentAudio.play().catch(() => {
+                // Browser rejected audio playback despite the start gesture.
+            });
+        }
 
-        // Auto-advance to next slide when audio ends
-        this.currentAudio.onended = () => {
-            if (this.autoAdvance && index < this.audioElements.length - 1) {
+        if (this.autoAdvance && index < this.audioElements.length - 1) {
+            this.advanceTimer = setTimeout(() => {
                 const nextIdx = index + 1;
                 this.presentation.goToSlide(nextIdx);
-                // Small delay before playing next slide audio
-                setTimeout(() => this.playSlide(nextIdx), 400);
-            }
-        };
-
-        this.currentAudio.play().catch(() => {
-            // Autoplay blocked — user hasn't interacted yet
-        });
+                this.playSlide(nextIdx);
+            }, this.slideDurations[index]);
+        }
     }
 }
 

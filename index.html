@@ -1506,18 +1506,12 @@ class VoiceoverController {
             this.currentAudio.onended = advanceToNextSlide;
 
             const playPromise = this.currentAudio.play();
-            if (playPromise?.then) {
-                playPromise
-                    .then(() => {
-                        // If the audio stalls, keep the demo moving at the measured narration pace.
-                        scheduleFallbackAdvance();
-                    })
-                    .catch(() => {
-                        // Browser rejected playback despite the start gesture.
-                        scheduleFallbackAdvance();
-                    });
-            } else {
-                scheduleFallbackAdvance();
+            // If audio stalls or the play promise stays pending, keep the demo moving.
+            scheduleFallbackAdvance();
+            if (playPromise?.catch) {
+                playPromise.catch(() => {
+                    // Browser rejected playback despite the start gesture; fallback is already armed.
+                });
             }
         } else {
             scheduleFallbackAdvance();

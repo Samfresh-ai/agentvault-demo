@@ -923,7 +923,7 @@ body.edit-active [contenteditable="true"]:focus {
 <!-- Autoplay prompt (browsers need user gesture for audio) -->
 <div class="autoplay-prompt" id="autoplayPrompt">
     <button class="play-btn" id="playBtn" aria-label="Start presentation with voiceover">&#x25B6;</button>
-    <div class="play-label">▶️ Click to run demo | 42s · 5 slides · voice on</div>
+    <div class="play-label">▶️ Click to run demo | 5 slides · clear voice</div>
     <div class="play-sublabel">auto-advance · Terminal 3 Agent Auth SDK</div>
 </div>
 
@@ -1401,6 +1401,7 @@ class VoiceoverController {
         this.autoAdvance = false;
         this.advanceTimer = null;
         this.currentAudio = null;
+        this.audioAdvanceBufferMs = 700;
         this.audioFiles = [
             'audio/slide1.mp3',
             'audio/slide2.mp3',
@@ -1416,15 +1417,17 @@ class VoiceoverController {
             "AgentVault is the identity and authorization layer enterprise AI has been missing. Least-privilege credentials, delegation chains, instant revocation, and a signed audit trail — all powered by Terminal 3's hardware-secured Agent Auth SDK. Built for banks, governments, and enterprise institutions."
         ];
         this.slideDurations = [
-            7000,
-            8000,
-            8000,
-            10000,
-            9000
+            9300,
+            11700,
+            16400,
+            19800,
+            21000
         ];
         this.audioElements = this.audioFiles.map(src => {
             const audio = new Audio(src);
             audio.preload = 'auto';
+            audio.playbackRate = 1;
+            audio.volume = 1;
             return audio;
         });
 
@@ -1473,26 +1476,51 @@ class VoiceoverController {
         clearTimeout(this.advanceTimer);
 
         if (this.currentAudio) {
+            this.currentAudio.onended = null;
             this.currentAudio.pause();
             this.currentAudio.currentTime = 0;
         }
 
         if (index < 0 || index >= this.audioElements.length) return;
 
+        const advanceToNextSlide = () => {
+            clearTimeout(this.advanceTimer);
+            if (this.autoAdvance && index < this.audioElements.length - 1) {
+                this.advanceTimer = setTimeout(() => {
+                    const nextIdx = index + 1;
+                    this.presentation.goToSlide(nextIdx);
+                    this.playSlide(nextIdx);
+                }, this.audioAdvanceBufferMs);
+            }
+        };
+
+        const scheduleFallbackAdvance = () => {
+            if (this.autoAdvance && index < this.audioElements.length - 1) {
+                this.advanceTimer = setTimeout(advanceToNextSlide, this.slideDurations[index]);
+            }
+        };
+
         if (!this.muted) {
             this.currentAudio = this.audioElements[index];
             this.currentAudio.currentTime = 0;
-            this.currentAudio.play().catch(() => {
-                // Browser rejected audio playback despite the start gesture.
-            });
-        }
+            this.currentAudio.onended = advanceToNextSlide;
 
-        if (this.autoAdvance && index < this.audioElements.length - 1) {
-            this.advanceTimer = setTimeout(() => {
-                const nextIdx = index + 1;
-                this.presentation.goToSlide(nextIdx);
-                this.playSlide(nextIdx);
-            }, this.slideDurations[index]);
+            const playPromise = this.currentAudio.play();
+            if (playPromise?.then) {
+                playPromise
+                    .then(() => {
+                        // If the audio stalls, keep the demo moving at the measured narration pace.
+                        scheduleFallbackAdvance();
+                    })
+                    .catch(() => {
+                        // Browser rejected playback despite the start gesture.
+                        scheduleFallbackAdvance();
+                    });
+            } else {
+                scheduleFallbackAdvance();
+            }
+        } else {
+            scheduleFallbackAdvance();
         }
     }
 }
